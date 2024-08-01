@@ -1,3 +1,4 @@
+
 import React, { useReducer, useEffect, useCallback, useRef, useMemo } from 'react'
 import { reducer } from '../reducer'
 import { WhatsappSVG, CloseSVG, CheckSVG, SendSVG } from './Icons'
@@ -36,6 +37,8 @@ export interface FloatingWhatsAppProps {
   statusMessage?: string
   /** Text inside the chat box */
   chatMessage?: string
+  /** Text that will be submitted with the input value */
+  defaultMessage?: string
   /** Input placeholder */
   placeholder?: string
 
@@ -86,6 +89,7 @@ export function FloatingWhatsApp({
   avatar = dummyAvatar,
   statusMessage = 'Typically replies within 1 hour',
   chatMessage = 'Hello there! 🤝 \nHow can we help?',
+  defaultMessage,
   placeholder = 'Type a message..',
 
   messageDelay = 2,
@@ -179,7 +183,7 @@ export function FloatingWhatsApp({
     event.preventDefault()
     if (!inputRef.current?.value) return
 
-    window.open(`https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${inputRef.current.value}`)
+    window.open(`https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${defaultMessage ?? ''}${inputRef.current.value}`)
     if (onSubmit) onSubmit(event, inputRef.current.value)
     inputRef.current.value = ''
   }
